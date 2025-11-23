@@ -178,7 +178,9 @@ Cada **Tarea** contiene:
 
 ## 👥 Autores
 
-Proyecto desarrollado por un grupo de 3 estudiantes para el curso de Estructuras de Datos.
+Sebastian Rey Escobar / 2040991-2724
+
+Alejandro Villamil Carmona
 
 ## 📄 Licencia
 
