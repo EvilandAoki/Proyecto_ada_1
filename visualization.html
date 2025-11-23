@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualización de Estructuras de Datos</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .visualization-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .structure-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .structure-section h2 {
+            color: #4a90e2;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e1e8ed;
+            padding-bottom: 10px;
+        }
+
+        .visualization-area {
+            min-height: 400px;
+            background: #f5f7fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+            overflow: auto;
+        }
+
+        .info-panel {
+            background: #e8f4f8;
+            border-left: 4px solid #4a90e2;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .info-panel strong {
+            color: #2c3e50;
+        }
+
+        .refresh-btn {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="visualization-container">
+        <header>
+            <h1>🔍 Visualización de Estructuras de Datos</h1>
+            <p class="subtitle">Estado actual del Heap y Árbol AVL</p>
+            <button class="btn btn-primary refresh-btn" onclick="loadAndVisualize()">🔄 Actualizar Visualización</button>
+            <a href="index.html" class="btn btn-secondary">← Volver a Gestión de Tareas</a>
+        </header>
+
+        <!-- Visualización del Heap -->
+        <section class="structure-section">
+            <h2>📊 Montículo Binario (Max-Heap)</h2>
+            <div class="info-panel">
+                <strong>Tamaño:</strong> <span id="heapSize">0</span> tareas<br>
+                <strong>Estructura:</strong> Array que mantiene la propiedad de montículo máximo
+            </div>
+            <div id="heapVisualization" class="visualization-area">
+                <p class="empty-message">No hay datos disponibles. Agrega tareas en la página principal.</p>
+            </div>
+        </section>
+
+        <!-- Visualización del Árbol AVL -->
+        <section class="structure-section">
+            <h2>🌳 Árbol AVL</h2>
+            <div class="info-panel">
+                <strong>Tamaño:</strong> <span id="avlSize">0</span> nodos<br>
+                <strong>Altura:</strong> <span id="avlHeight">0</span><br>
+                <strong>Búsqueda:</strong> O(log n) garantizado
+            </div>
+            <div id="avlVisualization" class="visualization-area">
+                <p class="empty-message">No hay datos disponibles. Agrega tareas en la página principal.</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/utils/idGenerator.js"></script>
+    <script src="js/models/Task.js"></script>
+    <script src="js/data-structures/Heap.js"></script>
+    <script src="js/data-structures/AVLTree.js"></script>
+    <script src="js/core/TaskManager.js"></script>
+    <script src="js/visualization/heapVisualizer.js"></script>
+    <script src="js/visualization/avlVisualizer.js"></script>
+    <script>
+        /**
+         * Carga y visualiza las estructuras de datos
+         */
+        function loadAndVisualize() {
+            try {
+                const stateJson = sessionStorage.getItem('taskManagerState');
+                if (!stateJson) {
+                    showMessage('No hay datos disponibles. Agrega tareas en la página principal.', 'info');
+                    return;
+                }
+
+                const state = JSON.parse(stateJson);
+                
+                // Actualizar información
+                document.getElementById('heapSize').textContent = state.heap.size;
+                document.getElementById('avlSize').textContent = state.avlTree.size;
+                
+                // Visualizar Heap
+                const heapTasks = state.heap.tasks.map(t => new Task(t.id, t.description, t.priority, t.dueDate));
+                HeapVisualizer.visualize(heapTasks, 'heapVisualization');
+                
+                // Visualizar AVL
+                const avlStructure = state.avlTree.structure;
+                if (avlStructure) {
+                    const height = calculateTreeHeight(avlStructure);
+                    document.getElementById('avlHeight').textContent = height;
+                    AVLVisualizer.visualize(avlStructure, 'avlVisualization');
+                } else {
+                    document.getElementById('avlHeight').textContent = '0';
+                    document.getElementById('avlVisualization').innerHTML = 
+                        '<p class="empty-message">El árbol está vacío</p>';
+                }
+
+            } catch (error) {
+                console.error('Error al cargar visualización:', error);
+                showMessage('Error al cargar las estructuras de datos', 'error');
+            }
+        }
+
+        /**
+         * Calcula la altura de un árbol
+         */
+        function calculateTreeHeight(node) {
+            if (!node) return 0;
+            return 1 + Math.max(
+                calculateTreeHeight(node.left),
+                calculateTreeHeight(node.right)
+            );
+        }
+
+        /**
+         * Muestra un mensaje
+         */
+        function showMessage(message, type) {
+            alert(message);
+        }
+
+        // Cargar al iniciar
+        document.addEventListener('DOMContentLoaded', loadAndVisualize);
+    </script>
+</body>
+</html>
+

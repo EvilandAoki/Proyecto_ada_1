@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión de Tareas - Heap y AVL</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📋 Sistema de Gestión de Tareas</h1>
+            <p class="subtitle">Implementación con Montículos (Heap) y Árboles AVL</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Formulario para agregar tareas -->
+            <section class="form-section">
+                <h2>Agregar Nueva Tarea</h2>
+                <form id="taskForm">
+                    <div class="form-group">
+                        <label for="description">Descripción:</label>
+                        <textarea id="description" name="description" rows="3" required placeholder="Ej: Estudiar para el examen"></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="priority">Prioridad:</label>
+                        <select id="priority" name="priority" required>
+                            <option value="">Seleccione una prioridad</option>
+                            <option value="alta">Alta</option>
+                            <option value="media">Media</option>
+                            <option value="baja">Baja</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dueDate">Fecha de Vencimiento:</label>
+                        <input type="date" id="dueDate" name="dueDate" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Agregar Tarea</button>
+                </form>
+            </section>
+
+            <!-- Búsqueda de tareas -->
+            <section class="search-section">
+                <h2>Buscar Tarea por ID</h2>
+                <div class="search-container">
+                    <input type="number" id="searchId" placeholder="Ingrese el ID de la tarea" min="1">
+                    <button type="button" id="searchBtn" class="btn btn-secondary">Buscar</button>
+                </div>
+                <div id="searchResult" class="search-result"></div>
+            </section>
+
+            <!-- Acciones rápidas -->
+            <section class="actions-section">
+                <h2>Acciones Rápidas</h2>
+                <div class="action-buttons">
+                    <button type="button" id="getPriorityBtn" class="btn btn-info">Ver Tarea Más Prioritaria</button>
+                    <button type="button" id="completePriorityBtn" class="btn btn-success">Completar Tarea Más Prioritaria</button>
+                    <button type="button" id="viewStructuresBtn" class="btn btn-warning">Ver Estructuras de Datos</button>
+                    <button type="button" id="runTestsBtn" class="btn btn-test">Ejecutar Casos de Prueba</button>
+                </div>
+            </section>
+
+            <!-- Lista de tareas -->
+            <section class="tasks-section">
+                <h2>Tareas Pendientes (Ordenadas por Prioridad)</h2>
+                <div id="tasksList" class="tasks-list">
+                    <p class="empty-message">No hay tareas registradas. Agrega una tarea para comenzar.</p>
+                </div>
+            </section>
+        </div>
+
+        <!-- Modal para editar tarea -->
+        <div id="editModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Editar Tarea</h2>
+                <form id="editForm">
+                    <input type="hidden" id="editId">
+                    <div class="form-group">
+                        <label for="editDescription">Descripción:</label>
+                        <textarea id="editDescription" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="editPriority">Prioridad:</label>
+                        <select id="editPriority" required>
+                            <option value="alta">Alta</option>
+                            <option value="media">Media</option>
+                            <option value="baja">Baja</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editDueDate">Fecha de Vencimiento:</label>
+                        <input type="date" id="editDueDate" required>
+                    </div>
+                    <div class="modal-buttons">
+                        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                        <button type="button" class="btn btn-secondary" id="cancelEdit">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Mensajes de notificación -->
+        <div id="notification" class="notification"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/utils/idGenerator.js"></script>
+    <script src="js/models/Task.js"></script>
+    <script src="js/data-structures/Heap.js"></script>
+    <script src="js/data-structures/AVLTree.js"></script>
+    <script src="js/core/TaskManager.js"></script>
+    <script src="js/utils/validators.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
+
