@@ -29,12 +29,25 @@ class Task {
     }
 
     /**
-     * Compara esta tarea con otra por prioridad
+     * Compara esta tarea con otra por prioridad y fecha de vencimiento
      * @param {Task} other - Otra tarea para comparar
      * @returns {number} Negativo si this tiene mayor prioridad, positivo si menor, 0 si igual
+     *                   Si las prioridades son iguales, compara por fecha (más cercana primero)
      */
     compareByPriority(other) {
-        return other.getPriorityValue() - this.getPriorityValue();
+        const priorityDiff = other.getPriorityValue() - this.getPriorityValue();
+        
+        // Si las prioridades son diferentes, retornar la diferencia
+        if (priorityDiff !== 0) {
+            return priorityDiff;
+        }
+        
+        // Si las prioridades son iguales, comparar por fecha de vencimiento
+        // La fecha más cercana (menor) tiene mayor prioridad
+        const thisDate = new Date(this.dueDate);
+        const otherDate = new Date(other.dueDate);
+        
+        return thisDate - otherDate;
     }
 
     /**

@@ -60,11 +60,12 @@ class TaskManager {
             updates.dueDate !== undefined ? updates.dueDate : existingTask.dueDate
         );
 
-        // Si cambió la prioridad, necesitamos reordenar el heap
+        // Si cambió la prioridad o la fecha, necesitamos reordenar el heap
         const priorityChanged = updates.priority && updates.priority !== existingTask.priority;
+        const dateChanged = updates.dueDate && updates.dueDate !== existingTask.dueDate;
 
-        if (priorityChanged) {
-            // Eliminar del heap y reinsertar con nueva prioridad
+        if (priorityChanged || dateChanged) {
+            // Eliminar del heap y reinsertar con nueva prioridad/fecha para mantener el orden
             this.heap.remove(taskId);
             this.heap.insert(updatedTask);
         } else {
@@ -113,13 +114,24 @@ class TaskManager {
     }
 
     /**
-     * Obtiene todas las tareas ordenadas por prioridad (del heap)
-     * @returns {Array<Task>} Array de tareas ordenadas por prioridad
+     * Reconstruye el heap para asegurar que esté ordenado correctamente según la nueva lógica
+     */
+    reconstruirHeap() {
+        const tasks = this.avlTree.getAllInOrder();
+        this.heap = new Heap();
+        tasks.forEach(task => this.heap.insert(task));
+    }
+
+    /**
+     * Obtiene todas las tareas ordenadas por prioridad y fecha de vencimiento
+     * @returns {Array<Task>} Array de tareas ordenadas por prioridad (y fecha si hay empate)
      */
     obtenerTareasPorPrioridad() {
-        // Crear una copia del heap para no modificar el original
-        const tasks = this.heap.getAll();
-        // Ordenar por prioridad (mayor a menor)
+        // Reconstruir el heap para asegurar que esté ordenado correctamente
+        this.reconstruirHeap();
+        // Obtener todas las tareas del AVL y ordenarlas
+        const tasks = this.avlTree.getAllInOrder();
+        // Ordenar por prioridad y fecha (mayor prioridad primero, y si hay empate, fecha más cercana primero)
         return tasks.sort((a, b) => a.compareByPriority(b));
     }
 

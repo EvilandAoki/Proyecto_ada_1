@@ -217,10 +217,10 @@ function closeEditModal() {
  * Elimina una tarea
  */
 function deleteTask(taskId) {
-    if (confirm('¿Está seguro de que desea eliminar esta tarea?')) {
+    if (confirm('¿Está seguro de que desea completar esta tarea?')) {
         const deleted = taskManager.eliminarTarea(taskId);
         if (deleted) {
-            showNotification(`Tarea #${taskId} eliminada exitosamente`, 'success');
+            showNotification(`Tarea #${taskId} completada exitosamente`, 'success');
             updateTasksList();
         } else {
             showNotification('No se pudo encontrar la tarea', 'error');
@@ -251,7 +251,7 @@ function updateTasksList() {
                 <span class="task-date">📅 Vence: ${formatDate(task.dueDate)}</span>
                 <div class="task-actions">
                     <button class="btn btn-info" onclick='openEditModal(${JSON.stringify(task)})'>Editar</button>
-                    <button class="btn btn-danger" onclick="deleteTask(${task.id})">Eliminar</button>
+                    <button class="btn btn-danger" onclick="deleteTask(${task.id})">Completar</button>
                 </div>
             </div>
         </div>

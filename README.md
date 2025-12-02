@@ -180,7 +180,7 @@ Cada **Tarea** contiene:
 
 Sebastian Rey Escobar / 2040991-2724
 
-Alejandro Villamil Carmona
+Alejandro Villamil Carmona / 2042419-2724
 
 ## 📄 Licencia
 
