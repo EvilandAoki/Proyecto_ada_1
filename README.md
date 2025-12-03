@@ -182,10 +182,6 @@ Sebastian Rey Escobar / 2040991-2724
 
 Alejandro Villamil Carmona / 2042419-2724
 
-## 📄 Licencia
-
-Este proyecto es de uso educativo.
-
 ---
 
 **¡Disfruta explorando las estructuras de datos!** 🚀
